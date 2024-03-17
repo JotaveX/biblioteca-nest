@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 import { BookDTO } from 'src/DTO/books.dto';
+import { Book } from 'src/mongo/interfaces/book.interface';
 import { BooksService } from 'src/services/books/books.service';
 
 @Controller('books')
@@ -11,8 +12,13 @@ export class BooksController {
     ) { }
 
     @Get()
-    getAllBooks(): string {
-        return 'All books';
+    async getAllBooks(): Promise<BookDTO[]> {
+        return await this.booksService.getAllBooks();
+    }
+
+    @Get(':id')
+    async getBook(@Param('id') id: any): Promise<BookDTO> {
+        return await this.booksService.getBook(id);
     }
 
     @Post()
@@ -21,15 +27,12 @@ export class BooksController {
     }
 
     @Patch()
-    updateBook(): string {
-        return 'Update book';
+    async updateBook(@Body() newBook: Book): Promise<Book> {
+        return await this.booksService.updateBook(newBook, newBook._id);
     }
 
-    @Delete()
-    deleteBook(): string {
-        return 'Delete book';
+    @Delete(':id')
+    async deleteBook(@Param('id') id: any): Promise<Book> {
+        return await this.booksService.deleteBook(id);
     }
-
-
-
 }

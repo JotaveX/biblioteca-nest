@@ -17,5 +17,20 @@ export class BookRepository {
         return await book.save() as BookDTO; // Cast the result as BookDTO
     }
 
-    
+    async getBook(id: any): Promise<BookDTO> {
+        return await this.bookModel.findById(id).exec() as BookDTO; // Cast the result as BookDTO
+    }
+
+    async getAllBooks(): Promise<BookDTO[]> {
+        return await this.bookModel.find().exec() as BookDTO[]; // Cast the result as BookDTO
+    }
+
+    async updateBook(newBook: Book, id: any): Promise<Book> {
+        return await this.bookModel.findByIdAndUpdate
+        (id, newBook, { new: true }) as Book; // Cast the result as Book
+    }
+
+    async deleteBook(id: any): Promise<Book> {
+        return await this.bookModel.findByIdAndDelete(id) as Book; // Cast the result as Book
+    }
 }
